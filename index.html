@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vue Basics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/vue@next" defer></script>
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Monster Slayer</h1>
+  </header>
+  <div id="game">
+    <section id="monster" class="container">
+      <h2>Monster Health</h2>
+      <div class="healthbar">
+        <div class="healthbar__value" :style="healthBarMonster"></div>
+      </div>
+    </section>
+    <section id="player" class="container">
+      <h2>Your Health</h2>
+      <div class="healthbar">
+        <div class="healthbar__value" :style="healthBarPlayer"></div>
+      </div>
+    </section>
+    <section class="container" v-if="winner">
+      <h3>Game Over!</h3>
+      <h2 v-if="winner === 'player'">You Win!</h2>
+      <h2 v-else-if="winner === 'monster'">You Lost!</h2>
+      <h2 v-else="winner === 'draw'">Draw!</h2>
+      <button @click="newGame()">Start New Game!</button>
+    </section>
+    <section id="controls" v-else>
+      <button @click="playerAtteck()">ATTACK</button>
+      <button @click="specialAtteck()" :disabled="mayUse">SPECIAL ATTACK</button>
+      <button @click="Heal()">HEAL</button>
+      <button @click="surr()">SURRENDER</button>
+    </section>
+    <section id="log" class="container">
+      <h2>Battle Log</h2>
+      <ul>
+        <li v-for="log in logs">
+          <span :class="{'log--player':log.actionBy==='player','log--monster':log.actionBy==='monster'}">{{ log.actionBy
+            === 'player' ? 'Player' : 'Monster' }} </span><span v-if="log.actionType === 'heal'"> Heal
+            Him Self For <span class="log--heal">{{ log.actionValue}}</span></span>
+          <span v-else> Attecks And Deal Demage <span class="log--damage">{{ log.actionValue}}</span></span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</body>
+
+</html>
